@@ -34,10 +34,12 @@ nz = 100
 ngf = 64
 ndf = 64
 npic = 5000
-num_epoch = 20
+num_epoch = 40
 gan_type = "dcgan"
-func_type = "mish"
-dataroot = f"E:/GenerateImages/{gan_type}/{func_type}/epoch_{num_epoch}/"
+func_type = "normal"
+dataroot = (
+    f"E:/GenerateImages/{gan_type}/{func_type}/cifar-10_epoch_{num_epoch}/images/"
+)
 
 
 class Generator(nn.Module):
@@ -71,7 +73,7 @@ class Generator(nn.Module):
 
 
 netG = Generator(ngpu).to(device)
-model_path = Path("../models/dcgan_normal_20_mish.pth")
+model_path = Path("../models/dcgan_normal_cifar-10_40.pth")
 netG.load_state_dict(torch.load(model_path))
 fixed_noise = torch.randn(npic, nz, 1, 1, device=device)
 img_list = []

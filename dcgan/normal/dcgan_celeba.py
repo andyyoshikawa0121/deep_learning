@@ -75,12 +75,26 @@ def run():
     # We can use an image folder dataset the way we have it setup.
     # Create the dataset
 
-    dataset = dset.ImageFolder(
-        root=dataroot,
+    # dataset = dset.ImageFolder(
+    #     root=dataroot,
+    #     transform=transforms.Compose(
+    #         [
+    #             transforms.Resize(image_size),
+    #             transforms.CenterCrop(image_size),
+    #             transforms.ToTensor(),
+    #             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    #         ]
+    #     ),
+    # )
+
+    # dataset for cifar-10
+
+    dataset = dset.CIFAR10(
+        root="data/",
+        download=True,
         transform=transforms.Compose(
             [
-                transforms.Resize(image_size),
-                transforms.CenterCrop(image_size),
+                transforms.Scale(image_size),
                 transforms.ToTensor(),
                 transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
             ]
@@ -319,14 +333,14 @@ def run():
                 img_list.append(utils.make_grid(fake, padding=2, normalize=True))
             iters += 1
 
-    model_path = f"dcgan_normal_{num_epochs}.pth"
+    model_path = f"dcgan_normal_cifar-10_{num_epochs}.pth"
     print(model_path)
     torch.save(netG.state_dict(), model_path)
 
-    slack = slackweb.Slack(
-        url="https://hooks.slack.com/services/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"
-    )
-    slack.notify(text="学習が終わりました！！")
+    # slack = slackweb.Slack(
+    #     url="https://hooks.slack.com/services/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"
+    # )
+    # slack.notify(text="学習が終わりました！！")
 
     plt.figure(figsize=(10, 5))
     plt.title("Generator and Discriminator Loss During Training")
